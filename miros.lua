@@ -92,7 +92,7 @@ function Hsm:dump()
     end
 end
 
--- 
+-- 
 -- ====================================
 -- Starts HSM. Enters and starts top state.
 
@@ -130,7 +130,7 @@ function Hsm:onStart(top)
     end
 end
 
--- 
+-- 
 -- ====================================
 -- Dispatches events.
 
@@ -191,7 +191,7 @@ function Hsm:onEvent(sType)
     return(0)
 end
 
--- 
+-- 
 -- ====================================
 -- Exits current states and all super states up to LCA.
 
