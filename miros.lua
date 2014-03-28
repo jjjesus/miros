@@ -5,7 +5,7 @@
 --[[
 
 Miros - A module that implements a Hierarchical State Machine (HSM)
-class (i.e. one that implements behavioral inheritance). 
+class (i.e. one that implements behavioral inheritance).
 
 It is based on the excellent work of Miro Samek (hence the module name
 "miros"). This implementation closely follows an older C/C++
@@ -16,7 +16,7 @@ http://www.embedded.com/2000/0008.
 
 A wealth of more current information can be found at Miro's well kept
 site: http://www.state-machine.com/.
- 
+
 As far as I know this is the first implementation of Samek's work in
 Lua. It was tested with Lua 5.1.4.
 
@@ -34,7 +34,7 @@ Rev.    Date        Comments
                     test case used thus far. Non-cached version remains
                     (commented out) just below cached version.
 1.1.3    1/18/09    TS, Cleaned up variable def.'s and init..
-1.1.4    2/23/09    TS, onStart() now takes argument top. Renamed sEvt to 
+1.1.4    2/23/09    TS, onStart() now takes argument top. Renamed sEvt to
                     sType and tMsg to tEvt. This is consistent with
                     the Python version.
 
@@ -72,9 +72,9 @@ end
 -- ancestor is shares with the target state.
 
 function Hsm:addState(sName, fHandler, fSuper)
-    self[fHandler] = { 
-        name = sName, 
-        handler = fHandler, 
+    self[fHandler] = {
+        name = sName,
+        handler = fHandler,
         super = fSuper,
         toLcaCache = {},
     }
@@ -87,12 +87,12 @@ end
 function Hsm:dump()
     -- printf("\nSelf-%s\n", tostring(self))
     for k, v in pairs(self) do
-        printf("State-%s\t%s,  Parent-%s, toLcaCache: %s\n", 
+        printf("State-%s\t%s,  Parent-%s, toLcaCache: %s\n",
                v.name, tostring(v), tostring(self[v.super]), tostring(v.toLcaCache))
     end
 end
 
--- 
+--
 -- ====================================
 -- Starts HSM. Enters and starts top state.
 
@@ -118,19 +118,19 @@ function Hsm:onStart(top)
            -- trace path to target
            entryPath[#entryPath + 1] = s.handler
            s = self[s.super]
-        end
-        -- follow path in reverse calling each handler
-        self.tEvt.sType = "entry"
-        for i = #entryPath, 1, -1 do
-            -- retrace entry from source
-            entryPath[i](self)
-        end
-        self.rCurr = self.rNext
-        self.rNext = 0
-    end
+		end
+		-- follow path in reverse calling each handler
+		self.tEvt.sType = "entry"
+		for i = #entryPath, 1, -1 do
+		    -- retrace entry from source
+			entryPath[i](self)
+		end
+		self.rCurr = self.rNext
+		self.rNext = 0
+	end
 end
 
--- 
+--
 -- ====================================
 -- Dispatches events.
 
@@ -191,7 +191,7 @@ function Hsm:onEvent(sType)
     return(0)
 end
 
--- 
+--
 -- ====================================
 -- Exits current states and all super states up to LCA.
 
@@ -211,7 +211,7 @@ function Hsm:exit(toLca)
 end
 
 -- ====================================
--- Finds number of levels to LCA (least common ancestor). 
+-- Finds number of levels to LCA (least common ancestor).
 
 function Hsm:toLCA(Target)
     local toLca = 0
@@ -243,7 +243,7 @@ function Hsm:stateTran(rTarget)
     -- printf("\nCurrent state: %s, Source state: %s\n", tostring(self.rCurr), tostring(self.rSource))
     if self.rCurr.toLcaCache[self.tEvt.sType] == nil then
         self.rCurr.toLcaCache[self.tEvt.sType] = self:toLCA(self[rTarget])
-        -- printf("Cached State-%s, Event: %s, toLca: %d\n", 
+        -- printf("Cached State-%s, Event: %s, toLca: %d\n",
         --         tostring(self.rCurr), self.tEvt.sType, self.rCurr.toLcaCache[self.tEvt.sType])
     end
     self:exit(self.rCurr.toLcaCache[self.tEvt.sType])
@@ -252,7 +252,7 @@ end
 
 -- -- ==========================
 -- -- non-cached version
--- 
+--
 -- function Hsm:stateTran(rTarget)
 --     local toLca = self:toLCA(self[rTarget])
 --     self:exit(toLca)
